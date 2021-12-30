@@ -135,6 +135,7 @@ namespace osu.Game.Rulesets.Soyokaze
                         new MultiMod(new SoyokazeModSuddenDeath(), new SoyokazeModPerfect()),
                         new MultiMod(new SoyokazeModDoubleTime(), new SoyokazeModNightcore()),
                         new SoyokazeModHidden(),
+                        new SoyokazeModSpinners(),
                     };
 
                 case ModType.Automation:

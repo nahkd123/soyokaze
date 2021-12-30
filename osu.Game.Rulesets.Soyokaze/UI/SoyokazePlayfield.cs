@@ -58,6 +58,8 @@ namespace osu.Game.Rulesets.Soyokaze.UI
 
             RegisterPool<Hold, DrawableHold>(15, 30);
             RegisterPool<HoldCircle, DrawableHoldCircle>(15, 30);
+            RegisterPool<Spinner, DrawableSpinner>(15, 30);
+            RegisterPool<SpinnerTick, DrawableSpinnerTick>(15, 100);
         }
 
         protected override void OnNewDrawableHitObject(DrawableHitObject drawableObject)
@@ -102,6 +104,10 @@ namespace osu.Game.Rulesets.Soyokaze.UI
                         break;
                     case DrawableHold hold:
                         if (hold.Hit(e.Action))
+                            return true;
+                        break;
+                    case DrawableSpinner spinner:
+                        if (spinner.Hit(e.Action))
                             return true;
                         break;
                 }

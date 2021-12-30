@@ -18,6 +18,7 @@ namespace osu.Game.Rulesets.Soyokaze.Beatmaps
     public class SoyokazeBeatmapConverter : BeatmapConverter<SoyokazeHitObject>
     {
         public BindableBool CreateHolds { get; } = new BindableBool(true);
+        public BindableBool CreateSpinners { get; } = new BindableBool(false);
 
         public SoyokazeBeatmapConverter(IBeatmap beatmap, Ruleset ruleset)
             : base(beatmap, ruleset)
@@ -59,7 +60,12 @@ namespace osu.Game.Rulesets.Soyokaze.Beatmaps
                 case IHasDuration longNote:
                     if (!CreateHolds.Value)
                         goto default;
-                    hitObject = new Hold
+                    if (CreateSpinners.Value) hitObject = new Spinner
+                    {
+                        Duration = longNote.Duration,
+                        Samples = original.Samples,
+                    };
+                    else hitObject = new Hold
                     {
                         Duration = longNote.Duration,
                         EndSamples = original.Samples,
