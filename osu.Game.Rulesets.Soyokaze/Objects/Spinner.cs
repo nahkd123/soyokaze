@@ -30,8 +30,8 @@ namespace osu.Game.Rulesets.Soyokaze.Objects
             base.ApplyDefaultsToSelf(controlPointInfo, difficulty);
 
             var seconds = Duration / 1000;
-            HitsRequired = (int)(seconds * 16);
-            MaximumBonusHits = (int)(seconds * 32) - HitsRequired;
+            HitsRequired = (int)(seconds * 12);
+            MaximumBonusHits = (int)(seconds * 24) - HitsRequired;
         }
 
         protected override void CreateNestedHitObjects(CancellationToken cancellationToken)

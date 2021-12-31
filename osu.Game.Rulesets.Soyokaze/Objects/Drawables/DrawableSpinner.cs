@@ -150,7 +150,6 @@ namespace osu.Game.Rulesets.Soyokaze.Objects.Drawables
         }
 
         private bool? previousIsLeftSide;
-        private int repeatingHitsCount = 0;
 
         public override bool Hit(SoyokazeAction action)
         {
@@ -158,16 +157,8 @@ namespace osu.Game.Rulesets.Soyokaze.Objects.Drawables
 
             // Player have to hit alternating between DPAD-L and DPAD-R
             bool isLeftSide = (int)action < 4;
-            if (previousIsLeftSide == isLeftSide)
-            {
-                if (repeatingHitsCount > 2) return false;
-                repeatingHitsCount++;
-            }
-            else
-            {
-                repeatingHitsCount = 0;
-                previousIsLeftSide = isLeftSide;
-            }
+            if (previousIsLeftSide == isLeftSide) return false;
+            previousIsLeftSide = isLeftSide;
 
             UpdateResult(true);
             return true;

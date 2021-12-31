@@ -20,7 +20,7 @@ namespace osu.Game.Rulesets.Soyokaze.Replays
         private KeyPress[] keyPresses = new KeyPress[8];
 
         private const double default_press_duration = 75.0;
-        private const double default_smashing_hit_duration = 25.0;
+        private const double default_smashing_hit_duration = 35.0;
         private const double default_press_safety_buffer = 5.0;
 
         public new Beatmap<SoyokazeHitObject> Beatmap => (Beatmap<SoyokazeHitObject>)base.Beatmap;
