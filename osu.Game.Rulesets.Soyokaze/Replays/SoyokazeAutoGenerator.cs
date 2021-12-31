@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using osu.Game.Beatmaps;
 using osu.Game.Replays;
 using osu.Game.Rulesets.Mods;
+using osu.Game.Rulesets.Objects.Types;
 using osu.Game.Rulesets.Replays;
 using osu.Game.Rulesets.Soyokaze.Objects;
 using osu.Game.Rulesets.Soyokaze.UI;
@@ -19,6 +20,7 @@ namespace osu.Game.Rulesets.Soyokaze.Replays
         private KeyPress[] keyPresses = new KeyPress[8];
 
         private const double default_press_duration = 75.0;
+        private const double default_smashing_hit_duration = 25.0;
         private const double default_press_safety_buffer = 5.0;
 
         public new Beatmap<SoyokazeHitObject> Beatmap => (Beatmap<SoyokazeHitObject>)base.Beatmap;
@@ -59,8 +61,8 @@ namespace osu.Game.Rulesets.Soyokaze.Replays
                 double pressDuration;
                 switch (currentObject)
                 {
-                    case Hold hold:
-                        pressDuration = hold.Duration;
+                    case IHasDuration hasDuration:
+                        pressDuration = hasDuration.Duration;
                         break;
                     default:
                         pressDuration = default_press_duration;
@@ -83,10 +85,26 @@ namespace osu.Game.Rulesets.Soyokaze.Replays
                     }
                 }
 
-                keyPresses[(int)currentButton].Start = currentObject.StartTime;
-                keyPresses[(int)currentButton].End = currentObject.StartTime + pressDuration;
-                addOrderedFrame(generateReplayFrame(currentObject.StartTime));
-                releaseFrameTimes.AddLast(currentObject.StartTime + pressDuration);
+                if (currentObject is Spinner spinner)
+                {
+                    var maxHits = spinner.HitsRequired + spinner.MaximumBonusHits;
+                    for (int j = 0; j < maxHits; j++)
+                    {
+                        var hitTime = spinner.StartTime + ((float)j / maxHits) * spinner.Duration;
+                        var nextKey = (j % 2 * 4) + j / 2 % 4;
+                        keyPresses[nextKey].Start = hitTime;
+                        keyPresses[nextKey].End = hitTime + default_smashing_hit_duration;
+                        addOrderedFrame(generateReplayFrame(hitTime));
+                        releaseFrameTimes.AddLast(hitTime + default_smashing_hit_duration);
+                    }
+                }
+                else
+                {
+                    keyPresses[(int)currentButton].Start = currentObject.StartTime;
+                    keyPresses[(int)currentButton].End = currentObject.StartTime + pressDuration;
+                    addOrderedFrame(generateReplayFrame(currentObject.StartTime));
+                    releaseFrameTimes.AddLast(currentObject.StartTime + pressDuration);
+                }
             }
 
             for (var node = releaseFrameTimes.First; node != null; node = node.Next)
