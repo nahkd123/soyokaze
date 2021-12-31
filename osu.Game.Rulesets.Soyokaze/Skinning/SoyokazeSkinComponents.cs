@@ -13,6 +13,9 @@ namespace osu.Game.Rulesets.Soyokaze.Skinning
         HoldOverlay,
         InputOverlayKey,
         InputOverlayBackground,
-        KiaiVisualizerSquare
+        KiaiVisualizerSquare,
+        SpinnerDisc,
+        SpinnerFill,
+        SpinnerOverlay
     }
 }
