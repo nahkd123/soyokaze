@@ -94,9 +94,18 @@ namespace osu.Game.Rulesets.Soyokaze.Objects.Drawables
 
         private void updateProgress(float progress)
         {
-            spinnerProgress.ScaleTo(System.Math.Min(progress, 1f), 700f, Easing.OutCubic);
+            double scaleTime;
             if (progress > 1)
-                spinnerProgress.FadeColour(Color4Extensions.FromHex("#FFB84D6D"), 300f);
+            {
+                scaleTime = 150;
+                spinnerProgress.FadeColour(Color4Extensions.FromHex("#FFE86F7F"), 30);
+                using (spinnerProgress.BeginDelayedSequence(30))
+                {
+                    spinnerProgress.FadeColour(Color4Extensions.FromHex("#FFB84D6D"), 100);
+                }
+            }
+            else scaleTime = 350;
+            spinnerProgress.ScaleTo(System.Math.Min(progress, 1f), scaleTime, Easing.Out);
         }
 
         protected override void UpdateHitStateTransforms(ArmedState state)
