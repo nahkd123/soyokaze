@@ -1,20 +1,14 @@
 ﻿// Copyright (c) Alden Wu <aldenwu0@gmail.com>. Licensed under the MIT Licence.
 // See the LICENSE file in the repository root for full licence text.
 
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using osu.Framework.Allocation;
-using osu.Framework.Extensions.Color4Extensions;
 using osu.Framework.Graphics;
 using osu.Framework.Graphics.Containers;
-using osu.Framework.Graphics.Shapes;
-using osu.Game.Audio;
 using osu.Game.Rulesets.Objects.Drawables;
 using osu.Game.Rulesets.Scoring;
 using osu.Game.Rulesets.Soyokaze.Skinning;
 using osu.Game.Rulesets.Soyokaze.UI;
-using osu.Game.Skinning;
 using osuTK;
 
 namespace osu.Game.Rulesets.Soyokaze.Objects.Drawables
