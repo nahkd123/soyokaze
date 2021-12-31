@@ -115,6 +115,11 @@ namespace osu.Game.Rulesets.Soyokaze.Objects.Drawables
                 case ArmedState.Hit:
                     spinnerCircle.ScaleTo(2.0f, 350, Easing.OutCubic);
                     spinnerCircle.FadeOutFromOne(350);
+                    this.MoveToOffset(Vector2.Zero, 350).Expire();
+                    break;
+                case ArmedState.Miss:
+                    spinnerCircle.FadeOutFromOne(150);
+                    this.MoveToOffset(Vector2.Zero, 150).Expire();
                     break;
             }
         }
@@ -177,9 +182,26 @@ namespace osu.Game.Rulesets.Soyokaze.Objects.Drawables
             }
         }
 
+        private bool? previousIsLeftSide;
+        private int repeatingHitsCount = 0;
+
         public override bool Hit(SoyokazeAction action)
         {
             if (Time.Current < HitObject.StartTime || Time.Current > HitObject.EndTime) return false;
+
+            // Player have to hit alternating between DPAD-L and DPAD-R
+            bool isLeftSide = (int)action < 4;
+            if (previousIsLeftSide == isLeftSide)
+            {
+                if (repeatingHitsCount > 2) return false;
+                repeatingHitsCount++;
+            }
+            else
+            {
+                repeatingHitsCount = 0;
+                previousIsLeftSide = isLeftSide;
+            }
+
             UpdateResult(true);
             return true;
         }
